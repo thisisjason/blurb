@@ -18,7 +18,7 @@ function slideOut(el, animateFrom) {
     var id = setInterval(animateIn, animationSpeed);
 
     function animateIn() {
-        if (posOut == "-70") {
+        if (posOut == "-80") {
             clearInterval(id);
         } else {
             posOut--;
@@ -36,7 +36,7 @@ function slideIn(el, animateFrom) {
    
     el.style.display = "block";
 
-    var pos = -70;
+    var pos = -80;
     var animationSpeed = 5;
     var id = setInterval(animateIn, animationSpeed);
 
@@ -77,13 +77,13 @@ function Blurb(config) {
             config.animateFrom = "top";
             break;
         case "topright":
-            box.style.top = "-500px";    
+            box.style.top = "-500px";
             box.style.top = "-" + box.style.height.replace("px", "");
             box.style.right = "20px";
             config.animateFrom = "top";
             break;
         case "bottomleft":
-            box.style.bottom = "-500px";                            
+            box.style.bottom = "-500px";
             box.style.bottom = "-" + box.style.height.replace("px", "");
             box.style.left = "20px";
             config.animateFrom = "bottom";
@@ -114,7 +114,7 @@ function Blurb(config) {
     icon.style.top = "50%";
     icon.style.transform = "translate(0, -50%)";
     icon.style.borderRadius = "50%";
-    icon.style.backgroundImage = 'url("https://pbs.twimg.com/profile_images/575077236870504448/0ouQEY65.jpeg")';
+    icon.style.backgroundImage = config.iconImage ? config.iconImage : 'url("http://icons.iconarchive.com/icons/yellowicon/game-stars/256/Mario-icon.png")';
     icon.style.backgroundSize = "cover";
     box.appendChild(icon);
   
@@ -129,18 +129,28 @@ function Blurb(config) {
     blurbtext.style.cursor = "pointer";
     blurbtext.style.display = "flex";
     blurbtext.style.alignItems = "center";
+    
     blurbtext.textContent = config.message;
-    box.appendChild(blurbtext);
+    
+    //Create Message Link
+    var a = document.createElement('a');
+    a.href =  config.messageLink ? config.messageLink : "";
+    a.target = "_blank";
+    a.style.textDecoration = "none";
+    a.style.color = config.color ? config.color : "#FFF";
+    a.appendChild(blurbtext);
+    
+    
+    box.appendChild(a);
+    
      
     // Get mouseOver state to keep visible when mouse is on the Blurb
     var mouseOver = false;
     document.getElementsByClassName('blurb')[0].onmouseover  = function() {
         mouseOver = true;
-        console.log(mouseOver);
     }
     document.getElementsByClassName('blurb')[0].onmouseout = function() {
         mouseOver = false;
-        console.log(mouseOver);
     }
 
 
@@ -163,10 +173,15 @@ function Blurb(config) {
 }
 
 var myBlurb = new Blurb({
-    message: " Congratulations! You have won 3 FLY FARTS! Please remain calm. It will be ok...", // You have won 3 FLY FARTS! Please remain calm. It will be ok... 
-    wait: "3600", //enter time in seconds
-    corner: "bottomleft" // Enter blurb location - Options: bottom
-
+    message: "Easily customizable blurb!",
+    messageLink: "http://www.github.com/thisisjason/blurb",
+    iconImage: 'url("http://sharepointmaven.com/wp-content/uploads/2015/08/img-bell-icon.png")',
+    width: "240px",
+    height: "70px",
+    wait: "3", //enter hang time in seconds
+    corner: "bottomright", // Enter blurb location - Options: bottomright bottomleft topright topleft
+    bgcolor: "rgba(0,0,0,.6)", // HEX or RGBA
+    color: "#FFF", // HEX or RGBA
 });
 
 myBlurb.show(); //alerts message
