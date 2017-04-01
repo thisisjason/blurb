@@ -2,49 +2,221 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400">  
-  <title>Blurb.js</title>
-        <style>
-            
-            header{
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-            h1 {
-                font-family: 'Roboto Condensed', sans-serif;
-                font-size: 45px;
-                color: #FFF;
-                text-align: center;
-                margin: 10px 0px;
-            }
-            h5{
-                font-family: 'Roboto Condensed', sans-serif;
-                font-size: 18px;
-                color: #FFF;
-                text-align: center;
-                margin: 10px 0px;
-            }
-            
-            body {
-                height: calc(100vh - 45px);
-                margin: 0;
-                padding: 0;
-                background: radial-gradient(rgb(33, 150, 243), rgb(21, 101, 192));
-            }
-      
-  </style>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400">
+    <title>Blurb.js</title>
+    <style>
+        header {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        h1 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 45px;
+            color: #FFF;
+            text-align: center;
+            margin: 10px 0px;
+        }
+        
+        h5 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 18px;
+            color: #14283A ;
+            text-align: center;
+            margin: 10px 0px;
+        }
+        
+        body {
+            height: calc(100vh - 45px);
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(rgb(33, 150, 243), rgb(21, 101, 192));
+        }
+        
+        #adjust{
+            margin-top:10px;
+        }
+        button {
+            height: 40px;
+            width: 90px;
+            margin: 5px;
+            padding: 5px;
+            border: 0;
+            background-color: #0B3356;
+            color: #FFF;
+            transition: .1s;
+        }
+        
+        button:hover {
+            color: #FFF;
+            background-color: #000;
+            cursor: pointer;
+        }
+        
+        #input{
+            text-align: center;
+            margin: 20px 0px 10px 0px;
+        }
+        form{
+            display: inline-block;
+        }
+        form input{
+            background-color: #0B3356;
+            color: #FFF;
+            border: none;
+            height: 40px;
+            outline: none;
+            display: inline-block;
+            width: 170px;
+            padding-left: 10px;
+        }
+        input:hover{
+            background-color: #000;
+        }
+    </style>
 </head>
 
 <body>
-   <header>
-    <h1>Welcome to Blurb.js!</h1>
-    <h5>Add notifications to your site with ease!</h5>
-   </header>
-  <script type="text/javascript" src="blurb.js"></script>
-  
+    <header>
+        <h1>Welcome to Blurb.js!</h1>
+        <h5>Add notifications to your site with ease!</h5>
+
+        <!--
+    <form>
+      Location<br>
+      <input type="text" name="location"><br>
+      <input type="submit" value="Submit">
+    </form>
+-->
+        <div id="input">
+            <form action="javascript:void(0)">
+                <input id="blurbtext" type="text" autocomplete="off" name="alert" placeholder="Enter Blurb Here!" onchange="blurbmes(this.value)" >
+<!--                <input type="submit" value="Submit">-->
+            </form>
+        </div> 
+        <div id="adjust">
+            <button class="location" id="bl">Bottom Left</button>
+            <button class="location" id="br">Bottom Right</button>
+            <button class="location" id="tl">Top Left</button>
+            <button class="location" id="tr">Top Right</button>
+        </div>  
+    </header>
+    <!--         <div class="blurb">This is a better notification. Hey this a notification. How do you like me now?</div> -->
+    <script type="text/javascript" src="blurb.js"></script>
+
+    <script>
+        
+        var blurbList = new Array();
+        
+        function addBlurb(){
+            
+            var blurb = new Blurb({
+                message: "Easily customizable blurb!",
+                link: "http://www.github.com/thisisjason/blurb",
+                iconImage: "http://sharepointmaven.com/wp-content/uploads/2015/08/img-bell-icon.png",
+                width: "240px",
+                height: "70px",
+                wait: "3",
+                corner: "bottomright",
+                bgcolor: "rgba(0,0,0,.6)",
+                color: "#FFF"
+            });
+            blurb.setLink("http://www.google.com");
+            blurbList.push(blurb);
+            console.log(blurbList);
+        }
+        
+
+
+        //myBlurb.show(); //alerts message
+    </script>
+
+    <script>
+        // Demo Page Tests
+        var position = document.getElementsByClassName('location');
+        console.log(position.length);
+        
+        //so dumb.. i gotta find a better way of cycling through classes...
+        var bl = document.getElementById('bl');
+        var br = document.getElementById('br');
+        var tl = document.getElementById('tl');
+        var tr = document.getElementById('tr');
+        
+        var inputalert = document.getElementById('blurbtext');
+
+        function blurbmes(value){
+           window.inputalert.value = value;   
+        };
+        
+        inputalert.addEventListener('keypress', function(e) {
+            var key = e.which || e.keyCode;
+            if (key === 13) { // 13 is enter
+                if(window.lastpos == null){
+                    lastpos = "bottomright";
+                }
+               
+            addBlurb();
+            var blurb = blurbList[blurbList.length-1];
+            blurb.setPosition(lastpos);
+            blurb.setMessage(inputalert.value);
+            blurb.show();
+            }
+        });
+//        if(input.value == null){
+//                blurb.setMessage("test");
+//            };
+
+        bl.addEventListener('click', function(){
+            addBlurb();
+            var blurb = blurbList[blurbList.length-1];
+            blurb.setPosition('bottomleft');
+            blurb.setMessage(inputalert.value);
+            blurb.show();
+        });
+        br.addEventListener('click', function(){
+            addBlurb();
+            var blurb = blurbList[blurbList.length-1];
+            blurb.setPosition('bottomright');
+            blurb.setMessage(inputalert.value);
+            blurb.show();
+        });
+        tl.addEventListener('click', function(){
+            addBlurb();
+            var blurb = blurbList[blurbList.length-1];
+            blurb.setPosition('topleft');
+            blurb.setMessage(inputalert.value);
+            blurb.show();
+        });
+        tr.addEventListener('click', function(){
+            addBlurb();
+            var blurb = blurbList[blurbList.length-1];
+            blurb.setPosition('topright');
+            blurb.setMessage(inputalert.value);
+            blurb.show();
+        });
+
+        
+        function pos(loc,mes){
+        myBlurb.show(); 
+        }
+        
+        
+        
+        
+    </script>
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
