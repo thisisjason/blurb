@@ -1,6 +1,6 @@
 # Blurb.js
-
 Blurb is a simple javascript library for html notifications.
+## [Demo Page](https://thisisjason.github.io/blurb)
 
 ## Getting Started
 ### Load blurb.js
